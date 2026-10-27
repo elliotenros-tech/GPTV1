@@ -9,25 +9,20 @@
 </head>
 <body>
   <aside id="sidebar">
-    <a class="brand" href="/" aria-label="Parkdale Athletics home"><span class="brand-icon">P</span><span>PARKDALE<small>ATHLETICS</small></span></a>
+    <a class="brand" href="/" aria-label="Parkdale Athletics home"><span class="brand-icon brand-panther" aria-hidden="true"></span><span>PARKDALE<small>ATHLETICS</small></span></a>
     <nav aria-label="Main navigation">
-      <button class="nav-item active" data-tab="intramurals"><span aria-hidden="true"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><circle cx="12" cy="5" r="2.5"/><path d="M5 10h14M12 8v6m0 0-4 7m4-7 4 7"/></svg></span>Intramurals</button>
+      <button class="nav-item active" data-tab="intramurals" aria-current="true"><span aria-hidden="true"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><circle cx="12" cy="5" r="2.5"/><path d="M5 10h14M12 8v6m0 0-4 7m4-7 4 7"/></svg></span>Intramurals</button>
       <button class="nav-item" data-tab="tryouts"><span aria-hidden="true">⚑</span>Tryouts</button>
       <button class="nav-item" data-tab="scores"><span aria-hidden="true">◷</span>Scores &amp; games</button>
     </nav>
     <div class="sidebar-bottom">Parkdale Collegiate Institute<small>Toronto, Ontario</small></div>
   </aside>
   <div class="workspace">
-    <header><button id="menu-toggle" aria-label="Toggle sidebar" aria-expanded="true">☰</button><span>Parkdale <b>/</b> Athletics</span><span class="header-right">PCI</span></header>
+    <header><button id="menu-toggle" aria-controls="sidebar" aria-label="Toggle sidebar" aria-expanded="true">☰</button><span>Parkdale <b>/</b> Athletics</span><span class="header-right">PCI</span></header>
     <main>
       <section class="hero" aria-label="Parkdale Panthers">
         <div class="hero-copy"><div class="eyebrow">PARKDALE COLLEGIATE INSTITUTE</div><h1>Panthers<br>Athletics.</h1></div>
       </section>
-      <div class="section-tabs" role="tablist" aria-label="Athletics sections">
-        <button role="tab" aria-selected="true" data-tab="intramurals" class="active">Intramurals</button>
-        <button role="tab" aria-selected="false" data-tab="tryouts">Tryouts</button>
-        <button role="tab" aria-selected="false" data-tab="scores">Scores &amp; games</button>
-      </div>
       <section id="content" aria-live="polite"></section>
       <footer><span>209 Jameson Avenue, Toronto</span><a href="/manage">Edit schedules ↗</a></footer>
     </main>

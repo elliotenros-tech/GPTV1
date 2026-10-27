@@ -59,10 +59,12 @@ async function loadSchedules(){
  catch{schedulesError=true;}
  if(tab!=='scores')render();
 }
-function setTab(next){tab=next;filter='All sports';document.querySelectorAll('[data-tab]').forEach(x=>{x.classList.toggle('active',x.dataset.tab===tab);if(x.hasAttribute('role'))x.setAttribute('aria-selected',String(x.dataset.tab===tab));});render();if(next==='scores')loadGames();if(innerWidth<760){document.body.classList.remove('mobile-open');document.querySelector('#menu-toggle').setAttribute('aria-expanded','false');}}
+function setTab(next){tab=next;filter='All sports';document.querySelectorAll('[data-tab]').forEach(x=>{x.classList.toggle('active',x.dataset.tab===tab);if(x.dataset.tab===tab)x.setAttribute('aria-current','true');else x.removeAttribute('aria-current');});render();if(next==='scores')loadGames();if(innerWidth<760){document.body.classList.remove('mobile-open');syncSidebar();document.querySelector('#menu-toggle').focus();}}
 document.querySelectorAll('[data-tab]').forEach(x=>x.addEventListener('click',()=>setTab(x.dataset.tab)));
-document.querySelector('#menu-toggle').addEventListener('click',e=>{const mobile=innerWidth<760;document.body.classList.toggle(mobile?'mobile-open':'sidebar-collapsed');e.currentTarget.setAttribute('aria-expanded',String(mobile?document.body.classList.contains('mobile-open'):!document.body.classList.contains('sidebar-collapsed')))});
-document.querySelectorAll('[role="tab"]').forEach((el,i,all)=>el.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();const next=all[(i+(e.key==='ArrowRight'?1:all.length-1))%all.length];next.focus();setTab(next.dataset.tab);}}));
+function syncSidebar(){const expanded=innerWidth<760?document.body.classList.contains('mobile-open'):!document.body.classList.contains('sidebar-collapsed');document.querySelector('#sidebar').inert=!expanded;document.querySelector('#menu-toggle').setAttribute('aria-expanded',String(expanded));}
+document.querySelector('#menu-toggle').addEventListener('click',()=>{document.body.classList.toggle(innerWidth<760?'mobile-open':'sidebar-collapsed');syncSidebar();});
+window.addEventListener('resize',syncSidebar);
+syncSidebar();
 render();
 loadSchedules();
 window.addEventListener('focus',loadSchedules);
