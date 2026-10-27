@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Edit schedules · Parkdale Athletics</title><link rel="stylesheet" href="/style.css"></head>
+<body class="editor-page">
+ <header><a href="/" class="back-link">← Athletics</a><span class="header-right">PARKDALE</span></header>
+ <main class="editor-main">
+  <div class="content-heading"><h1>Edit schedules</h1><button id="lock-editor" class="refresh-games" hidden>Lock editor</button></div>
+  <section id="unlock-panel" class="editor-panel">
+   <h2>Editor access</h2><p>Enter the editor access code shown in Terminal when the app starts.</p>
+   <form id="unlock-form"><label for="editor-code">Access code</label><div class="unlock-row"><input id="editor-code" type="password" autocomplete="current-password" required><button class="primary-button" type="submit">Unlock</button></div></form>
+  </section>
+  <p id="editor-status" class="editor-status" role="status" aria-live="polite"></p>
+  <div id="editor-workspace" hidden>
+   <div class="editor-toolbar"><label for="category">Section<select id="category"><option value="intramurals">Intramurals</option><option value="tryouts">Tryouts</option></select></label><button class="refresh-games" id="reload-list">Reload list</button></div>
+   <div class="editor-layout">
+    <section class="editor-panel">
+     <div class="editor-panel-heading"><h2>Events</h2><button id="new-event" class="refresh-games">+ Add event</button></div>
+     <p class="editor-hint">Sample entries stay marked until you replace or delete them.</p>
+     <div id="event-list"></div>
+    </section>
+    <section class="editor-panel">
+     <h2 id="form-title">Add intramural</h2>
+     <form id="event-form">
+      <input type="hidden" name="id">
+      <label for="sport">Sport<input id="sport" name="sport" maxlength="60" required placeholder="e.g. Basketball"></label>
+      <label for="date">Date<input id="date" name="date" type="date" required></label>
+      <div class="form-pair"><label for="start">Start time<input id="start" name="start" type="time" required></label><label for="end">End time<input id="end" name="end" type="time" required></label></div>
+      <p class="editor-hint">All dates and times are local to Toronto.</p>
+      <label for="place">Location<input id="place" name="place" maxlength="120" required placeholder="e.g. Main gym"></label>
+      <label id="detail-label" for="detail">Format / grades <span>(optional)</span><input id="detail" name="detail" maxlength="120" placeholder="e.g. Doubles · All grades"></label>
+      <div id="tryout-fields" hidden>
+       <label for="level">Level<input id="level" name="level" maxlength="80" placeholder="e.g. Junior girls"></label>
+       <label for="teacher">Teacher <span>(optional)</span><input id="teacher" name="teacher" maxlength="80" placeholder="e.g. Ms. Chen"></label>
+      </div>
+      <div class="form-actions"><button class="primary-button" type="submit" id="save-event">Save event</button><button class="refresh-games" id="cancel-edit" type="button">Clear</button></div>
+     </form>
+    </section>
+   </div>
+  </div>
+ </main>
+ <script src="/manage.js"></script>
+</body>
+</html>

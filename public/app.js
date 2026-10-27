@@ -1,14 +1,4 @@
-const intramurals = [
- {sport:'Basketball',icon:'◉',day:'MON',date:'26',time:'11:45 AM – 12:25 PM',place:'Main gym',detail:'Open play · All grades',type:'Drop-in',color:'peach'},
- {sport:'Volleyball',icon:'◍',day:'WED',date:'28',time:'11:45 AM – 12:25 PM',place:'Main gym',detail:'6-on-6 · All grades',type:'Drop-in',color:'lavender'},
- {sport:'Badminton',icon:'⌁',day:'FRI',date:'30',time:'11:45 AM – 12:25 PM',place:'Upper gym',detail:'Doubles · All grades',type:'Drop-in',color:'green'}
-];
-const tryouts = [
- {sport:'Basketball',level:'Junior boys',day:'TUE',date:'27',time:'3:15 – 4:30 PM',place:'Main gym',teacher:'Ms. Chen',color:'peach',icon:'◉'},
- {sport:'Volleyball',level:'Senior girls',day:'WED',date:'28',time:'3:15 – 4:30 PM',place:'Main gym',teacher:'Mr. Williams',color:'lavender',icon:'◍'},
- {sport:'Soccer',level:'Junior boys',day:'THU',date:'29',time:'3:30 – 5:00 PM',place:'School field',teacher:'Ms. Patel',color:'green',icon:'◎'},
- {sport:'Basketball',level:'Senior boys',day:'FRI',date:'30',time:'3:15 – 4:30 PM',place:'Main gym',teacher:'Mr. Thompson',color:'peach',icon:'◉'}
-];
+let schedules = null, schedulesError = false;
 let tab = 'intramurals'; let filter = 'All sports';
 let gameFeed = null, gamesLoading = false, gamesError = false, gamesLoadedAt = 0;
 const content = document.querySelector('#content');
@@ -41,19 +31,40 @@ async function loadGames(force = false) {
 }
 function render() {
  const titles = {intramurals:'Intramurals',tryouts:'Tryouts',scores:'Scores & games'};
- content.innerHTML = `<div class="content-heading"><h2>${titles[tab]}</h2>${tab!=='scores'?`<label class="filter"><span class="sr-only">Filter by sport</span><select id="sport-filter"><option>All sports</option>${[...new Set((tab==='intramurals'?intramurals:tryouts).map(x=>x.sport))].map(s=>`<option ${s===filter?'selected':''}>${s}</option>`).join('')}</select></label>`:''}</div>${tab === 'scores' ? '' : '<div class="sample-notice"><span>ⓘ</span> Sample schedules and teacher names.</div>'}`;
+ const entries=schedules?.[tab] || [];
+ content.innerHTML = `<div class="content-heading"><h2>${titles[tab]}</h2>${tab!=='scores'?`<label class="filter"><span class="sr-only">Filter by sport</span><select id="sport-filter"><option>All sports</option>${[...new Set(entries.map(x=>x.sport))].sort().map(s=>`<option ${s===filter?'selected':''}>${escapeText(s)}</option>`).join('')}</select></label>`:''}</div>`;
+ if(tab!=='scores'&&schedules&&schedulesError)content.innerHTML+='<div class="sample-notice">Couldn’t refresh schedules. Showing the last loaded version.</div>';
  if(tab==='scores') {
- content.innerHTML += renderGames();
+  content.innerHTML += renderGames();
+ } else if(!schedules) {
+  content.innerHTML += `<div class="feed-status"><p>${schedulesError?'Schedules couldn’t be loaded.':'Loading schedules…'}</p>${schedulesError?'<button class="refresh-games" id="retry-schedules">Try again</button>':''}</div>`;
  } else {
- const items=(tab==='intramurals'?intramurals:tryouts).filter(x=>filter==='All sports'||x.sport===filter);
- content.innerHTML+=`<div class="schedule-meta"><span>OCTOBER 26 – 30, 2026</span><span>${items.length} ${tab==='tryouts'?'tryouts':'sessions'} this week</span></div><div class="schedule">${items.map(x=>`<article class="schedule-row"><div class="date"><span>${x.day}</span><strong>${x.date}</strong></div><div class="sport-icon ${x.color}">${x.icon}</div><div class="sport-info"><h3>${x.sport}</h3><p>${x.detail||x.level}</p></div><div class="time"><span>◷</span><div>${x.time}<small>October ${x.date}, 2026</small></div></div><div class="place"><span>⌖</span><div>${x.place}${x.teacher?`<small>Teacher: ${x.teacher}</small>`:''}</div></div><span class="badge">${x.type||'Tryout'} <span>↗</span></span></article>`).join('')}</div><div class="schedule-foot"><span>◷ &nbsp; All times are local to Toronto.</span></div>`;
+  const items=entries.filter(x=>filter==='All sports'||x.sport===filter).sort((a,b)=>a.date.localeCompare(b.date)||a.start.localeCompare(b.start));
+  if(entries.some(x=>x.sample))content.innerHTML+=`<div class="sample-notice">${tab==='intramurals'?'Sample intramural sessions are marked below.':'Sample tryouts are marked below.'}</div>`;
+  content.innerHTML+=`<div class="schedule-meta"><span>${items.length} ${tab==='tryouts'?'TRYOUTS':'SESSIONS'}</span><span>Toronto time</span></div>${items.length?`<div class="schedule">${items.map(x=>{
+   const date=new Date(x.date+'T12:00:00Z');
+   const day=new Intl.DateTimeFormat('en-CA',{weekday:'short',timeZone:'America/Toronto'}).format(date).toUpperCase();
+   const colours={Basketball:['peach','◉'],Volleyball:['lavender','◍'],Badminton:['green','⌁'],Soccer:['green','◎']};
+   const [colour,icon]=colours[x.sport]||['green','⚑'];
+   return `<article class="schedule-row"><div class="date"><span>${day}</span><strong>${date.getUTCDate()}</strong></div><div class="sport-icon ${colour}" aria-hidden="true">${icon}</div><div class="sport-info"><h3>${escapeText(x.sport)}</h3><p>${escapeText(tab==='tryouts'?x.level:x.detail)}</p>${x.sample?'<small class="sample-tag">Sample</small>':''}</div><div class="time"><span aria-hidden="true">◷</span><div>${displayTime(x.start)} – ${displayTime(x.end)}<small>${gameDate(x.date)}</small></div></div><div class="place"><span aria-hidden="true">⌖</span><div>${escapeText(x.place)}${tab==='tryouts'&&x.teacher?`<small>Teacher: ${escapeText(x.teacher)}</small>`:''}</div></div><span class="badge">${tab==='tryouts'?'Tryout':'Intramural'}</span></article>`;
+  }).join('')}</div>`:'<p class="games-empty">No '+(tab==='tryouts'?'tryouts':'intramurals')+' posted'+(filter!=='All sports'?' for this sport':'')+'.</p>'}`;
  }
+ document.querySelector('#retry-schedules')?.addEventListener('click',loadSchedules);
  document.querySelector('#refresh-games')?.addEventListener('click',()=>loadGames(true));
  document.querySelector('#sport-filter')?.addEventListener('change',e=>{filter=e.target.value;render()});
+}
+function displayTime(time){const [hours,minutes]=time.split(':').map(Number);return `${hours%12||12}:${String(minutes).padStart(2,'0')} ${hours>=12?'PM':'AM'}`;}
+async function loadSchedules(){
+ try{const response=await fetch('/api/schedules',{cache:'no-store'});if(!response.ok)throw Error('Unavailable');schedules=await response.json();schedulesError=false;if(tab!=='scores'&&filter!=='All sports'&&!schedules[tab].some(x=>x.sport===filter))filter='All sports';}
+ catch{schedulesError=true;}
+ if(tab!=='scores')render();
 }
 function setTab(next){tab=next;filter='All sports';document.querySelectorAll('[data-tab]').forEach(x=>{x.classList.toggle('active',x.dataset.tab===tab);if(x.hasAttribute('role'))x.setAttribute('aria-selected',String(x.dataset.tab===tab));});render();if(next==='scores')loadGames();if(innerWidth<760){document.body.classList.remove('mobile-open');document.querySelector('#menu-toggle').setAttribute('aria-expanded','false');}}
 document.querySelectorAll('[data-tab]').forEach(x=>x.addEventListener('click',()=>setTab(x.dataset.tab)));
 document.querySelector('#menu-toggle').addEventListener('click',e=>{const mobile=innerWidth<760;document.body.classList.toggle(mobile?'mobile-open':'sidebar-collapsed');e.currentTarget.setAttribute('aria-expanded',String(mobile?document.body.classList.contains('mobile-open'):!document.body.classList.contains('sidebar-collapsed')))});
 document.querySelectorAll('[role="tab"]').forEach((el,i,all)=>el.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();const next=all[(i+(e.key==='ArrowRight'?1:all.length-1))%all.length];next.focus();setTab(next.dataset.tab);}}));
 render();
+loadSchedules();
+window.addEventListener('focus',loadSchedules);
+setInterval(()=>{if(tab!=='scores')loadSchedules();},60000);
 setInterval(()=>{if(tab==='scores')loadGames(true);},15*60*1000);

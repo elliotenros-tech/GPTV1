@@ -1,0 +1,86 @@
+{
+  "revision": 0,
+  "updatedAt": null,
+  "intramurals": [
+    {
+      "id": "intra-basketball",
+      "sport": "Basketball",
+      "date": "2026-10-26",
+      "start": "11:45",
+      "end": "12:25",
+      "place": "Main gym",
+      "detail": "Open play · All grades",
+      "sample": true
+    },
+    {
+      "id": "intra-volleyball",
+      "sport": "Volleyball",
+      "date": "2026-10-28",
+      "start": "11:45",
+      "end": "12:25",
+      "place": "Main gym",
+      "detail": "6-on-6 · All grades",
+      "sample": true
+    },
+    {
+      "id": "intra-badminton",
+      "sport": "Badminton",
+      "date": "2026-10-30",
+      "start": "11:45",
+      "end": "12:25",
+      "place": "Upper gym",
+      "detail": "Doubles · All grades",
+      "sample": true
+    }
+  ],
+  "tryouts": [
+    {
+      "id": "tryout-basketball-junior",
+      "sport": "Basketball",
+      "date": "2026-10-27",
+      "start": "15:15",
+      "end": "16:30",
+      "place": "Main gym",
+      "detail": "",
+      "level": "Junior boys",
+      "teacher": "Ms. Chen",
+      "sample": true
+    },
+    {
+      "id": "tryout-volleyball",
+      "sport": "Volleyball",
+      "date": "2026-10-28",
+      "start": "15:15",
+      "end": "16:30",
+      "place": "Main gym",
+      "detail": "",
+      "level": "Senior girls",
+      "teacher": "Mr. Williams",
+      "sample": true
+    },
+    {
+      "id": "tryout-soccer",
+      "sport": "Soccer",
+      "date": "2026-10-29",
+      "start": "15:30",
+      "end": "17:00",
+      "place": "School field",
+      "detail": "",
+      "level": "Junior boys",
+      "teacher": "Ms. Patel",
+      "sample": true
+    },
+    {
+      "id": "tryout-basketball-senior",
+      "sport": "Basketball",
+      "date": "2026-10-30",
+      "start": "15:15",
+      "end": "16:30",
+      "place": "Main gym",
+      "detail": "",
+      "level": "Senior boys",
+      "teacher": "Mr. Thompson",
+      "sample": true
+    }
+  ]
+}

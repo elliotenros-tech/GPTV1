@@ -2,3 +2,5 @@ node_modules/
 .DS_Store
 .env
 *.log
+data/schedules.local.json
+data/schedules.local.json.*.tmp
