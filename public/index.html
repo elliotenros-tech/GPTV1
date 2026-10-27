@@ -1,7 +1,37 @@
 <!doctype html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#ee4c22"><title>Parkdale Athletics</title><link rel="stylesheet" href="/style.css"></head>
-<body><aside id="sidebar"><a class="brand" href="/" aria-label="Parkdale Athletics home"><span class="brand-icon">P<span>↗</span></span><span>PARKDALE<small>ATHLETICS</small></span></a><div class="side-label">YOUR ATHLETICS HUB</div><nav><button class="nav-item active" data-tab="intramurals"><span>▦</span>Intramurals<em>03</em></button><button class="nav-item" data-tab="tryouts"><span>⚑</span>Tryouts<em>04</em></button><button class="nav-item" data-tab="scores"><span>◷</span>Scores &amp; games</button></nav><div class="sidebar-bottom"><div class="school-mark">P<span>PCI · EST. 1888</span></div><p>One school.<br>Every kind of athlete.</p><span class="location">Toronto, Ontario ↗</span><div class="school-name">Parkdale Collegiate Institute</div></div></aside>
-<div class="workspace"><header><button id="menu-toggle" aria-label="Toggle sidebar" aria-expanded="true">☰</button><span>Student life <b>/</b> Athletics</span><span class="header-right"><i></i> THE HOME OF THE PANTHERS <span class="avatar">P</span></span></header><main><div class="page-heading"><div class="eyebrow">PARKDALE COLLEGIATE INSTITUTE</div><div class="title-row"><h1>Your game. Your community.</h1><span class="term">FALL SEASON <span>2026</span></span></div><p>The next game, the first tryout, the lunch-hour rivalry. It all starts here.</p></div>
-<section class="hero"><div class="hero-copy"><span class="hero-tag"><i></i> ALL PANTHERS WELCOME</span><h2>Find your people.<br>Play your game.</h2><p>A little competition. A lot of school spirit.<br>Make your next move with Parkdale Athletics.</p><button id="hero-action">Explore intramurals <span>↗</span></button></div><div class="hero-art" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><span class="art-star">✳</span><div class="giant-p">P</div><span class="art-label">PARKDALE<br>PANTHERS</span><span class="art-year">EST.<br>1888</span></div></section>
-<div class="section-tabs" role="tablist" aria-label="Athletics sections"><button role="tab" aria-selected="true" data-tab="intramurals" class="active">Intramurals <span>03</span></button><button role="tab" aria-selected="false" data-tab="tryouts">Tryouts <span>04</span></button><button role="tab" aria-selected="false" data-tab="scores">Scores &amp; games</button></div>
-<section id="content" aria-live="polite"></section><section class="bottom-note"><div class="note-icon">↗</div><div><h3>There’s a place for you on the team.</h3><p>New to a sport? Just curious? Everyone is welcome to get involved.</p></div><span>PANTHER PRIDE. EVERY DAY.</span></section><footer><span>Parkdale Athletics <b>·</b> 209 Jameson Avenue, Toronto</span><span>Made for the Panther community <span class="orange">✳</span></span></footer></main></div><script src="/app.js"></script></body></html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ed2424">
+  <title>Parkdale Athletics</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <aside id="sidebar">
+    <a class="brand" href="/" aria-label="Parkdale Athletics home"><span class="brand-icon">P</span><span>PARKDALE<small>ATHLETICS</small></span></a>
+    <nav aria-label="Main navigation">
+      <button class="nav-item active" data-tab="intramurals"><span aria-hidden="true">▦</span>Intramurals</button>
+      <button class="nav-item" data-tab="tryouts"><span aria-hidden="true">⚑</span>Tryouts</button>
+      <button class="nav-item" data-tab="scores"><span aria-hidden="true">◷</span>Scores &amp; games</button>
+    </nav>
+    <div class="sidebar-bottom">Parkdale Collegiate Institute<small>Toronto, Ontario</small></div>
+  </aside>
+  <div class="workspace">
+    <header><button id="menu-toggle" aria-label="Toggle sidebar" aria-expanded="true">☰</button><span>Parkdale <b>/</b> Athletics</span><span class="header-right">PCI</span></header>
+    <main>
+      <section class="hero" aria-label="Parkdale Panthers">
+        <div class="hero-copy"><div class="eyebrow">PARKDALE COLLEGIATE INSTITUTE</div><h1>Panthers<br>Athletics.</h1></div>
+      </section>
+      <div class="section-tabs" role="tablist" aria-label="Athletics sections">
+        <button role="tab" aria-selected="true" data-tab="intramurals" class="active">Intramurals</button>
+        <button role="tab" aria-selected="false" data-tab="tryouts">Tryouts</button>
+        <button role="tab" aria-selected="false" data-tab="scores">Scores &amp; games</button>
+      </div>
+      <section id="content" aria-live="polite"></section>
+      <footer>209 Jameson Avenue, Toronto</footer>
+    </main>
+  </div>
+  <script src="/app.js"></script>
+</body>
+</html>
