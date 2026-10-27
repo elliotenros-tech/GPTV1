@@ -16,6 +16,7 @@ function resetForm(){
  const tryout=category()==='tryouts';
  $('#tryout-fields').hidden=!tryout;$('#level').required=tryout;
  $('#level').disabled=!tryout;$('#teacher').disabled=!tryout;
+ $('#classroomCode').disabled=!tryout;$('#information').disabled=!tryout;
  $('#detail-label').hidden=tryout;$('#detail').disabled=tryout;
  $('#form-title').textContent=tryout?'Add tryout':'Add intramural';
  $('#cancel-edit').textContent='Clear';

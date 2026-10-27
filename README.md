@@ -22,7 +22,7 @@ Initial intramural schedules and tryouts are illustrative sample data. Each samp
 1. Start the app with `npm run dev`.
 2. Open the app and click **Edit schedules** in the footer (or visit `/manage`).
 3. Copy the **Editor access code** shown in Terminal into the unlock form. This code is generated at startup and changes when the app restarts. It is kept in memory in the editor page, not in browser storage. Reloading the page locks the editor.
-4. Choose Intramurals or Tryouts. Fill out the sport, date, start and end times, and location. Intramurals have optional format/grades; tryouts have level and optional teacher. Click **Save event**. Use Edit or Delete beside an existing event to change it. Deletion asks for confirmation.
+4. Choose Intramurals or Tryouts. Fill out the sport, date, start and end times, and location. Intramurals have optional format/grades; tryouts have level, optional teacher, Google Classroom code, and additional information. Classroom codes and notes are visible to anyone who can view the app. Click **Save event**. Use Edit or Delete beside an existing event to change it. Deletion asks for confirmation.
 
 Changes are saved on the server and survive restarts. On macOS they live at `~/Library/Application Support/ParkdaleAthletics/schedules.json`, outside the downloaded project, so fresh downloads retain your edits. On other platforms the default is `data/schedules.local.json` (ignored by Git). Back up this file to preserve your schedules. The optional `SCHEDULES_FILE` variable overrides the storage location. Public schedule pages reload after returning to the browser tab and every minute while viewing schedules; a normal refresh also retrieves saved changes.
 

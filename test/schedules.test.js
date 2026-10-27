@@ -18,6 +18,19 @@ test('rejects impossible dates, invalid times and incomplete forms',()=>{
  }
  assert.throws(()=>validateEvent(example,'tryouts'),/level/);
 });
+test('optional Classroom codes and multiline tryout information persist without affecting intramurals',t=>{
+ const directory=fs.mkdtempSync(path.join(os.tmpdir(),'parkdale-tryout-info-'));t.after(()=>fs.rmSync(directory,{recursive:true,force:true}));
+ const file=path.join(directory,'schedules.json'),store=createScheduleStore(file);
+ const event={...example,level:'Senior girls',classroomCode:'abc1234',information:'Bring indoor shoes.\nPermission form required.'};
+ const saved=store.change({revision:0,action:'upsert',category:'tryouts',event});
+ const entry=createScheduleStore(file).read().tryouts.at(-1);
+ assert.equal(entry.classroomCode,'abc1234');assert.equal(entry.information,event.information);
+ const cleared=store.change({revision:saved.revision,action:'upsert',category:'tryouts',event:{...event,id:entry.id,classroomCode:'',information:''}});
+ assert.equal(cleared.tryouts.at(-1).classroomCode,'');assert.equal(cleared.tryouts.at(-1).information,'');
+ const original=validateEvent({...example,level:'Junior boys'},'tryouts');assert.equal(original.classroomCode,'');assert.equal(original.information,'');
+ const intramural=validateEvent(event,'intramurals');assert(!('classroomCode'in intramural));assert(!('information'in intramural));
+ assert.throws(()=>validateEvent({...event,information:'x'.repeat(2001)},'tryouts'),/information/);
+});
 test('add, edit and delete persist across reloads, protecting against stale writes',t=>{
  const directory=fs.mkdtempSync(path.join(os.tmpdir(),'parkdale-schedules-'));
  t.after(()=>fs.rmSync(directory,{recursive:true,force:true}));
