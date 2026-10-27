@@ -1,1 +1,17 @@
-{"name":"parkdale-athletics","version":"1.0.0","private":true,"scripts":{"dev":"node server.js","start":"node server.js","test":"node --check public/app.js && node --check server.js"}}
+{
+  "name": "parkdale-athletics",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "test": "node --check public/app.js && node --check server.js && node --test"
+  },
+  "dependencies": {
+    "cheerio": "1.1.2",
+    "undici": "7.30.1"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
