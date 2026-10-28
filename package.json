@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "node server.js",
     "start": "node server.js",
-    "test": "node --check public/app.js && node --check public/manage.js && node --check server.js && node --test"
+    "test": "node --check public/app.js && node --check public/manage.js && node --check server.js && node --test",
+    "check:scores": "node scripts/check-scores.js"
   },
   "dependencies": {
     "cheerio": "1.1.2",

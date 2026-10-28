@@ -42,7 +42,7 @@ http.createServer(async (req,res) => {
   if (pathname === '/api/games') {
     res.setHeader('Content-Type', 'application/json; charset=utf-8');
     res.setHeader('Cache-Control', 'no-store');
-    try { return res.end(JSON.stringify(await getScores())); }
+    try { return res.end(JSON.stringify(await getScores({force:new URL(req.url,'http://localhost').searchParams.get('refresh')==='1'}))); }
     catch { res.writeHead(503); return res.end(JSON.stringify({error:'Game information is temporarily unavailable.'})); }
   }
   const file = path.join(root, pathname === '/' ? 'index.html' : pathname === '/manage' ? 'manage.html' : pathname);

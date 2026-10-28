@@ -4,6 +4,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const {parseSchedule,selectWindow} = require('../lib/tdsb');
 const {createScoresService} = require('../lib/scores-service');
+const {connectionFailure} = require('../lib/tdsb-fetch');
 const html = fs.readFileSync(path.join(__dirname,'fixtures/tdsb-schedule.html'),'utf8');
 
 test('parses the uploaded TDSB schedule, scores, levels, venues and playoff notes',()=>{
@@ -86,4 +87,28 @@ test('coalesces live requests, caches success, and retains previous data after r
  const stale=await service();
  assert.equal(calls,2);assert.equal(stale.source,'live');assert.match(stale.warning,/could not be refreshed/);
  assert.equal(stale.fetchedAt,results[0].fetchedAt);
+});
+
+test('manual refresh bypasses the automatic cache after one minute, with a cooldown',async()=>{
+ let clock=new Date('2026-10-27T12:00:00-04:00'),calls=0;
+ const service=createScoresService({now:()=>clock,loadLive:async()=>{calls++;return html;}});
+ await service();assert.equal(calls,1);
+ const deferred=await service({force:true});assert.equal(calls,1);assert.equal(deferred.refresh.deferred,true);
+ clock=new Date(clock.getTime()+61000);
+ await service();assert.equal(calls,1);
+ const refreshed=await service({force:true});assert.equal(calls,2);assert.equal(refreshed.refresh.deferred,false);
+ assert.equal(refreshed.fetchedAt,clock.toISOString());
+ assert.equal(refreshed.refresh.error,null);
+});
+
+test('connection and parsing failures return safe diagnostic categories',async()=>{
+ assert.equal(connectionFailure({cause:{code:'ENOTFOUND'}}).code,'DNS_ERROR');
+ assert.equal(connectionFailure({name:'TimeoutError'}).code,'TIMEOUT');
+ assert.equal(connectionFailure({cause:{code:'UNABLE_TO_VERIFY_LEAF_SIGNATURE'}}).code,'TLS_ERROR');
+ const failed=createScoresService({loadLive:async()=>{throw Object.assign(Error('Do not expose raw details'),{diagnostic:{code:'HTTP_403',message:'TDSB or the network proxy denied access (HTTP 403).'}});}});
+ const response=await failed();assert.equal(response.refresh.error.code,'HTTP_403');assert(!JSON.stringify(response).includes('Do not expose'));
+ const changed=createScoresService({loadLive:async()=>'<html>Changed page</html>'});
+ assert.equal((await changed()).refresh.error.code,'PARSE_ERROR');
+ const offline=createScoresService({mode:'snapshot'});
+ const snapshot=await offline({force:true});assert.equal(snapshot.refresh.error.code,'SNAPSHOT_MODE');assert.equal(snapshot.refresh.lastAttemptAt,null);
 });
