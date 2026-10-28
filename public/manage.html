@@ -11,7 +11,7 @@
   </section>
   <p id="editor-status" class="editor-status" role="status" aria-live="polite"></p>
   <div id="editor-workspace" hidden>
-   <div class="editor-toolbar"><label for="category">Section<select id="category"><option value="intramurals">Intramurals</option><option value="tryouts">Tryouts</option></select></label><button class="refresh-games" id="reload-list">Reload list</button></div>
+   <div class="editor-toolbar"><label for="category">Section<select id="category"><option value="intramurals">Events</option><option value="tryouts">Tryouts</option></select></label><button class="refresh-games" id="reload-list">Reload list</button></div>
    <div class="editor-layout">
     <section class="editor-panel">
      <div class="editor-panel-heading"><h2>Events</h2><button id="new-event" class="refresh-games">+ Add event</button></div>
@@ -19,7 +19,7 @@
      <div id="event-list"></div>
     </section>
     <section class="editor-panel">
-     <h2 id="form-title">Add intramural</h2>
+     <h2 id="form-title">Add event</h2>
      <form id="event-form">
       <input type="hidden" name="id">
       <label for="sport">Sport<input id="sport" name="sport" maxlength="60" required placeholder="e.g. Basketball"></label>

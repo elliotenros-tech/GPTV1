@@ -35,7 +35,7 @@ async function loadGames(force = false, manual = false) {
  finally { gamesLoading=false;if(tab==='scores')render(); }
 }
 function render() {
- const titles = {intramurals:'Intramurals',tryouts:'Tryouts',scores:'Scores & games'};
+ const titles = {intramurals:'Events',tryouts:'Tryouts',scores:'Scores & games'};
  const entries=schedules?.[tab] || [];
  content.innerHTML = `<div class="content-heading"><h2>${titles[tab]}</h2>${tab!=='scores'?`<label class="filter"><span class="sr-only">Filter by sport</span><select id="sport-filter"><option>All sports</option>${[...new Set(entries.map(x=>x.sport))].sort().map(s=>`<option ${s===filter?'selected':''}>${escapeText(s)}</option>`).join('')}</select></label>`:''}</div>`;
  if(tab!=='scores'&&schedules&&schedulesError)content.innerHTML+='<div class="sample-notice">Couldn’t refresh schedules. Showing the last loaded version.</div>';
@@ -45,14 +45,14 @@ function render() {
   content.innerHTML += `<div class="feed-status"><p>${schedulesError?'Schedules couldn’t be loaded.':'Loading schedules…'}</p>${schedulesError?'<button class="refresh-games" id="retry-schedules">Try again</button>':''}</div>`;
  } else {
   const items=entries.filter(x=>filter==='All sports'||x.sport===filter).sort((a,b)=>a.date.localeCompare(b.date)||a.start.localeCompare(b.start));
-  if(entries.some(x=>x.sample))content.innerHTML+=`<div class="sample-notice">${tab==='intramurals'?'Sample intramural sessions are marked below.':'Sample tryouts are marked below.'}</div>`;
-  content.innerHTML+=`<div class="schedule-meta"><span>${items.length} ${tab==='tryouts'?'TRYOUTS':'SESSIONS'}</span><span>Toronto time</span></div>${items.length?`<div class="schedule">${items.map(x=>{
+  if(entries.some(x=>x.sample))content.innerHTML+=`<div class="sample-notice">${tab==='intramurals'?'Sample events are marked below.':'Sample tryouts are marked below.'}</div>`;
+  content.innerHTML+=`<div class="schedule-meta"><span>${items.length} ${tab==='tryouts'?'TRYOUTS':'EVENTS'}</span><span>Toronto time</span></div>${items.length?`<div class="schedule">${items.map(x=>{
    const date=new Date(x.date+'T12:00:00Z');
    const day=new Intl.DateTimeFormat('en-CA',{weekday:'short',timeZone:'America/Toronto'}).format(date).toUpperCase();
    const colours={Basketball:['peach','◉'],Volleyball:['lavender','◍'],Badminton:['green','⌁'],Soccer:['green','◎']};
    const [colour,icon]=colours[x.sport]||['green','⚑'];
-   return `<article class="schedule-row"><div class="schedule-main"><div class="date"><span>${day}</span><strong>${date.getUTCDate()}</strong></div><div class="sport-icon ${colour}" aria-hidden="true">${icon}</div><div class="sport-info"><h3>${escapeText(x.sport)}</h3><p>${escapeText(tab==='tryouts'?x.level:x.detail)}</p>${x.sample?'<small class="sample-tag">Sample</small>':''}</div><div class="time"><span aria-hidden="true">◷</span><div>${displayTime(x.start)} – ${displayTime(x.end)}<small>${gameDate(x.date)}</small></div></div><div class="place"><span aria-hidden="true">⌖</span><div>${escapeText(x.place)}${tab==='tryouts'&&x.teacher?`<small>Teacher: ${escapeText(x.teacher)}</small>`:''}</div></div><span class="badge">${tab==='tryouts'?'Tryout':'Intramural'}</span></div>${tab==='tryouts'&&(x.classroomCode||x.information)?`<div class="tryout-information">${x.classroomCode?`<div class="classroom-code"><span>Google Classroom</span><code>${escapeText(x.classroomCode)}</code></div>`:''}${x.information?`<p>${escapeText(x.information)}</p>`:''}</div>`:''}</article>`;
-  }).join('')}</div>`:'<p class="games-empty">No '+(tab==='tryouts'?'tryouts':'intramurals')+' posted'+(filter!=='All sports'?' for this sport':'')+'.</p>'}`;
+   return `<article class="schedule-row"><div class="schedule-main"><div class="date"><span>${day}</span><strong>${date.getUTCDate()}</strong></div><div class="sport-icon ${colour}" aria-hidden="true">${icon}</div><div class="sport-info"><h3>${escapeText(x.sport)}</h3><p>${escapeText(tab==='tryouts'?x.level:x.detail)}</p>${x.sample?'<small class="sample-tag">Sample</small>':''}</div><div class="time"><span aria-hidden="true">◷</span><div>${displayTime(x.start)} – ${displayTime(x.end)}<small>${gameDate(x.date)}</small></div></div><div class="place"><span aria-hidden="true">⌖</span><div>${escapeText(x.place)}${tab==='tryouts'&&x.teacher?`<small>Teacher: ${escapeText(x.teacher)}</small>`:''}</div></div><span class="badge">${tab==='tryouts'?'Tryout':'Event'}</span></div>${tab==='tryouts'&&(x.classroomCode||x.information)?`<div class="tryout-information">${x.classroomCode?`<div class="classroom-code"><span>Google Classroom</span><code>${escapeText(x.classroomCode)}</code></div>`:''}${x.information?`<p>${escapeText(x.information)}</p>`:''}</div>`:''}</article>`;
+  }).join('')}</div>`:'<p class="games-empty">No '+(tab==='tryouts'?'tryouts':'events')+' posted'+(filter!=='All sports'?' for this sport':'')+'.</p>'}`;
  }
  document.querySelector('#retry-schedules')?.addEventListener('click',loadSchedules);
  document.querySelector('#refresh-games')?.addEventListener('click',()=>loadGames(true,true));

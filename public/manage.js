@@ -18,7 +18,7 @@ function resetForm(){
  $('#level').disabled=!tryout;$('#teacher').disabled=!tryout;
  $('#classroomCode').disabled=!tryout;$('#information').disabled=!tryout;
  $('#detail-label').hidden=tryout;$('#detail').disabled=tryout;
- $('#form-title').textContent=tryout?'Add tryout':'Add intramural';
+ $('#form-title').textContent=tryout?'Add tryout':'Add event';
  $('#cancel-edit').textContent='Clear';
 }
 function listEvents(){
@@ -42,7 +42,7 @@ $('#event-list').addEventListener('click',async event=>{
  if((!edit&&!remove)||busy)return;
  const id=edit?.dataset.edit||remove.dataset.delete;
  const entry=saved[category()].find(x=>x.id===id);if(!entry)return;
- if(edit){resetForm();for(const [key,value] of Object.entries(entry)){if(form.elements[key])form.elements[key].value=value;}$('#form-title').textContent=category()==='tryouts'?'Edit tryout':'Edit intramural';$('#cancel-edit').textContent='Cancel';$('#sport').focus();status('');return;}
+ if(edit){resetForm();for(const [key,value] of Object.entries(entry)){if(form.elements[key])form.elements[key].value=value;}$('#form-title').textContent=category()==='tryouts'?'Edit tryout':'Edit event';$('#cancel-edit').textContent='Cancel';$('#sport').focus();status('');return;}
  if(!confirm(`Delete ${entry.sport} on ${entry.date}?`))return;
  setBusy(true);
  try{saved=await request('/api/schedules',{method:'POST',body:JSON.stringify({revision:saved.revision,category:category(),action:'delete',id})});listEvents();if(form.elements.id.value===id)resetForm();status('Event deleted.');}
